@@ -1,15 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Razor.Language;
 
 namespace RazorStandalone
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
+            var razorEngine = RazorProjectEngine.Create(
+                RazorConfiguration.Default,
+                RazorProjectFileSystem.Create("Views"));
+
+            var item = razorEngine.FileSystem.GetItem("Test.cshtml");
+            var cSharpDocument = razorEngine.Process(item).GetCSharpDocument();
+
+            Console.WriteLine(cSharpDocument.GeneratedCode);
         }
     }
 }
